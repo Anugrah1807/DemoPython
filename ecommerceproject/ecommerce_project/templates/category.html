@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+         {{ category.description|truncatewords:155 }}
+    {% else %}
+        Welcome to Indian Emporium where you can buy different items....
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+         {{ category.name }} - indian emporium
+    {% else %}
+        See our new collection - indian emporium
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+
+<div xmlns="http://www.w3.org/1999/html">
+      <div class="row my_row_class">
+          <div class="mx_auto">
+<!--        <p><a href="{% url 'ecommerce_app:allProdCat' %}">OUR COLLECTIONS</a></p>-->
+          </div>
+      </div>
+</div>
+
+{% endif %}
+
+
+<div class="mx_auto">
+    <h1 class="text-center my_title">{{category.name}}</h1>
+  {% if category %}
+  <img  class="my_image" src="{{category.image.url}}" alt="{{category.name}} " style="width:1300px;height:600px;">
+</div>
+     <br>
+<div>
+  <p class=" text-center text-justify cat_desc">{{category.description}}</p>
+</div>
+  {% else %}
+<div>
+  <img class="my_image my_image_padding" src="{% static 'img/banner4.png' %}" alt="our products" width="1500px">
+    <div class="container">
+  <div class="my_line">
+      <img src="{% static 'img/line6.png' %}">
+  </div>
+</div>
+</div>
+<br>
+<div>
+
+    <div>
+    <h1 class="text-center my_heading"><b>OUR   NEW  COLLECTIONS</b></h1>
+<!--  <p class="text-justify">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.</p>-->
+    </div>
+</div>
+  {% endif %}
+
+<div>
+  <div class="row mx-auto">
+    {% for product in products.object_list %}
+    <div class="my_bottom_margin col-3 col-sm-3  col-md-3 col-lg-3">
+        <div class="card text-center" style="min-width:18rem;">
+            <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}"></a>
+        <div class="card-body">
+            <h4>{{product.name}}</h4>
+             <p>{{product.price}}</p>
+        </div>
+        </div>
+    </div>
+      {% endfor %}
+  </div>
+    <div class="mx_auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+         {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
